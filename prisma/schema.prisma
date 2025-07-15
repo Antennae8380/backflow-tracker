@@ -1,0 +1,39 @@
+// === prisma/schema.prisma: START ===
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tester {
+  id          Int      @id @default(autoincrement())
+  name        String
+  licenseExp  DateTime
+  kits        TestKit[]
+}
+
+model TestKit {
+  id            Int      @id @default(autoincrement())
+  serial        String   @unique
+  calibExp      DateTime
+  tester        Tester   @relation(fields: [testerId], references: [id])
+  testerId      Int
+}
+
+model Property {
+  id            Int       @id @default(autoincrement())
+  address       String    @unique
+  devices       Device[]
+}
+
+model Device {
+  id            Int       @id @default(autoincrement())
+  serial        String    @unique
+  lastTested    DateTime
+  property      Property  @relation(fields: [propertyId], references: [id])
+  propertyId    Int
+}
+// === prisma/schema.prisma: END ===
