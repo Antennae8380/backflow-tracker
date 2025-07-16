@@ -1,3 +1,4 @@
+// === package.json: START ===
 {
   "name": "backflow-tracker",
   "version": "1.0.0",
@@ -5,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "cron": "node cron/alerts.js"
+    "cron": "node cron/alerts.js",
     "postinstall": "npx prisma db push"
   },
   "dependencies": {
@@ -20,3 +21,4 @@
     "tailwindcss": "latest"
   }
 }
+// === package.json: END ===
