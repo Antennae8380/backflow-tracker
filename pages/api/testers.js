@@ -6,7 +6,9 @@ export default async function handler(req, res) {
     try {
       const { name, licenseExp } = req.body;
       if (!name || !licenseExp) {
-        return res.status(400).json({ error: 'Name and date are required.' });
+        return res
+          .status(400)
+          .json({ error: 'Name and expiry date are required.' });
       }
       const newTester = await prisma.tester.create({
         data: {
@@ -17,12 +19,14 @@ export default async function handler(req, res) {
       return res.status(201).json(newTester);
     } catch (err) {
       console.error('API error:', err);
-      return res.status(500).json({ error: err.message });
+      return res
+        .status(500)
+        .json({ error: 'Server error creating tester: ' + err.message });
     }
   }
 
-  // For GET requests, return all testers
+  // GET /api/testers → return all testers
   const testers = await prisma.tester.findMany();
-  res.status(200).json(testers);
+  return res.status(200).json(testers);
 }
 // === pages/api/testers.js: END ===
