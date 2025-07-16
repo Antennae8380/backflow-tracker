@@ -50,4 +50,9 @@ export function AddTesterForm({ onAdded }) {
     </form>
   );
 }
+if (!res.ok) {
+  const err = await res.json();
+  alert('Error adding tester: ' + err.error);
+  return;
+}
 // === components/AddTesterForm.jsx: END ===
