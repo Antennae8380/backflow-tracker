@@ -27,4 +27,8 @@ export default async function handler(req, res) {
   const testers = await prisma.tester.findMany();
   res.json(testers);
 }
+catch (err) {
+  console.error('API error:', err);
+  return res.status(500).json({ error: err.message });
+}
 // === pages/api/testers.js: END ===
