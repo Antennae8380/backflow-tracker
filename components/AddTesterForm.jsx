@@ -5,22 +5,27 @@ export function AddTesterForm({ onAdded }) {
   const [name, setName] = useState('');
   const [licenseExp, setLicenseExp] = useState('');
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const res = await fetch('/api/testers', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, licenseExp }),
     });
-    if (res.ok) {
-      const tester = await res.json();
-      setName(''); setLicenseExp('');
-      onAdded(tester);
-      alert(`Added tester: ${tester.name}`);
-    } else {
-      alert('Error adding tester');
+
+    const result = await res.json();
+    if (!res.ok) {
+      alert('Error adding tester: ' + (result.error || 'Unknown error'));
+      return;
     }
-  }
+
+    // success path
+    setName('');
+    setLicenseExp('');
+    onAdded(result);
+    alert(`Added tester: ${result.name}`);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="mb-6 space-y-2">
@@ -29,7 +34,7 @@ export function AddTesterForm({ onAdded }) {
         <input
           type="text"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           className="border p-1 w-full"
           required
         />
@@ -39,7 +44,7 @@ export function AddTesterForm({ onAdded }) {
         <input
           type="date"
           value={licenseExp}
-          onChange={e => setLicenseExp(e.target.value)}
+          onChange={(e) => setLicenseExp(e.target.value)}
           className="border p-1"
           required
         />
@@ -49,10 +54,5 @@ export function AddTesterForm({ onAdded }) {
       </button>
     </form>
   );
-}
-if (!res.ok) {
-  const err = await res.json();
-  alert('Error adding tester: ' + err.error);
-  return;
 }
 // === components/AddTesterForm.jsx: END ===
